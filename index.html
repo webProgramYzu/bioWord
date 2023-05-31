@@ -1,1 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+textarea {
+  resize: none;
+}
+</style>
+</head>
+<body>
 
+<h2></h2>
+
+<form name="word" action="action_page.php" method="post">
+<p style="font-size:20px"><label for="word">Input sequence:</label></p>
+
+<textarea id="word" name="word" rows="4" cols="50"></textarea>
+
+<br>
+<br>
+<input type="submit" onClick="myFunction()" value="submit">
+<input type="reset" value="Reset">
+</form>
+<div id="a"></div>
+<script>
+  function myFunction() {
+    const a = document.getElementById("word");
+  }
+
+</script>
+
+</body>
+</html>
