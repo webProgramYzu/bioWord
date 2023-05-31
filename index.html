@@ -1,33 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-textarea {
-  resize: none;
-}
-</style>
+  <title>Sequence Logo Visualization</title>
+  <style>
+    .position
+container {
+      display: flex;
+      flex-direction: column; 
+    }
+    .char {
+      display: flex;
+      flex-direction: row; 
+      align-items: center;
+      justify-content: center;
+      width: 120px;
+      height: 120px;
+      border: 0px solid black; 
+    }
+    .char img {
+      width: 100%; 
+      height: 100%;
+      object-fit: fill; 
+    }
+    .char:not(:last-child) {
+      border-bottom: none; 
+    }
+    .position-container:not(:last-child) .char {
+      border-right: none; 
+    }
+    #ratioOutput {
+      display: flex;
+      flex-direction: row; 
+      align-items: flex-start; 
+      width: fit-content; 
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    function calculateRatio() {
+      var inputData = $('#dataInput').val();
+      var rows = inputData.split('\n');
+      var rowCount = rows.length;
+      var dataLength = rows[0].length;
+
+      var ratioCounts = {};
+      var ratioOutput = '';
+
+      for (var i = 0; i < rowCount; i++) {
+        var currentRow = rows[i];
+
+        for (var j = 0; j < dataLength; j++) {
+          var currentChar = currentRow[j];
+
+          if (!ratioCounts[j]) {
+            ratioCounts[j] = {};
+          }
+
+          if (!ratioCounts[j][currentChar]) {
+            ratioCounts[j][currentChar] = 0;
+          }
+
+          ratioCounts[j][currentChar]++;
+        }
+      }
+
+      for (var position in ratioCounts) {
+        ratioOutput += '<div class="position-container">';
+        var positionCounts = ratioCounts[position];
+        var total = Object.values(positionCounts).reduce((a, b) => a + b, 0);
+
+        for (var char in positionCounts) {
+          var ratio = positionCounts[char] / total;
+          var charHeight = Math.round(ratio * 100);
+          ratioOutput += '<div class="char" style="height: ' + charHeight + 'px"><img src="' + char + '.png"></div>';
+        }
+
+        ratioOutput += '</div>';
+      }
+
+      $('#ratioOutput').html(ratioOutput);
+    }
+  </script>
 </head>
 <body>
-
-<h2></h2>
-
-<form name="word" action="/action_page.php" method="post">
-<p style="font-size:20px"><label for="word">Input sequence:</label></p>
-
-<textarea id="word" name="word" rows="4" cols="50"></textarea>
-
-<br>
-<br>
-<input type="submit" onClick="myFunction()" value="submit">
-<input type="reset" value="Reset">
-</form>
-<div id="a"></div>
-<script>
-  function myFunction() {
-    const a = document.getElementById("word");
-  }
-
-</script>
-
+  <h1>Sequence Logo Visualization (reference by gpt)</h1>
+  <label for="dataInput">Entering Input：</label>
+  <br>
+  <textarea id="dataInput" rows="4" cols="50"></textarea>
+  <br>
+  <button onclick="calculateRatio()">submit</button>
+  <br>
+  <label for="ratioOutput">result:</label>
+  <br>
+  <div id="ratioOutput"></div>
 </body>
 </html>
